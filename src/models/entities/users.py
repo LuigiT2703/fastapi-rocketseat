@@ -1,10 +1,11 @@
-from sqlalchemy import Column, Integer, String
-from src.models.settings.metadata import Base
+from src.models.settings.metadata import metadata
+from sqlalchemy import Table, Column, Integer, String
 
-class Users(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True)
-    user_name = Column(String, nullable=False)
-    age = Column(Integer)
-    uf = Column(String)
+Users = Table(
+    "users",
+    metadata,
+    Column("id", Integer, primary_key=True),
+    Column("user_name", String, nullable=False),
+    Column("age", Integer),
+    Column("uf", String)
+)
