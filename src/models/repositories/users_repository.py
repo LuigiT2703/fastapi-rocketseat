@@ -1,0 +1,22 @@
+from sqlalchemy import insert, select
+from src.models.entities.users import Users
+from src.models.settings.database_connection_handler import DBConnection
+
+class InsertUser:
+  async def insert_user(self, infos_user: dict):
+    async with DBConnection() as db:
+      query = insert(Users).values(**infos_user)
+      await db.session.execute(query)
+      await db.session.commit()
+
+  async def get_user(self, user_name: str):
+    async with DBConnection() as db:
+      query = (
+        select(Users)
+        .where(Users.c.user_name == user_name) 
+      )
+
+      resultado = await db.session.execute(query)
+      rows = resultado.fetchall()
+      users_list = [dict(row._mapping) for row in rows]
+      return users_list
